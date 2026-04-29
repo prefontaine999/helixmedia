@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helix Media Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:        #0c0c0e;
+      --bg-card:   #131316;
+      --border:    #1e1e24;
+      --text:      #e8e8ec;
+      --muted:     #7a7a8a;
+      --accent:    #7b9cff;
+      --accent-dim:#3a4f8a;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      background: rgba(12, 12, 14, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    nav.scrolled {
+      border-color: var(--border);
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* ── Shared layout ───────────────────────────────── */
+    section {
+      padding: 120px 48px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    h1, h2 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    /* ── Hero ────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 140px;
+      padding-bottom: 120px;
+    }
+
+    #hero h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      color: var(--text);
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+
+    .hero-tagline {
+      font-size: clamp(18px, 2.5vw, 24px);
+      color: var(--accent);
+      font-weight: 400;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: transparent;
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(123, 156, 255, 0.08);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Divider line ────────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* ── About ───────────────────────────────────────── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1.8fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    #about h2 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-top: 4px;
+    }
+
+    .about-body p {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .about-body p strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* ── Services ────────────────────────────────────── */
+    #services {
+      padding-top: 100px;
+      padding-bottom: 120px;
+    }
+
+    #services .section-header {
+      display: grid;
+      grid-template-columns: 1fr 1.8fr;
+      gap: 80px;
+      align-items: end;
+      margin-bottom: 64px;
+    }
+
+    #services h2 {
+      font-size: 36px;
+      color: var(--text);
+    }
+
+    .services-intro {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 400px;
+      padding-bottom: 4px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      padding: 40px 36px;
+      transition: background 0.2s;
+    }
+
+    .service-card:hover {
+      background: #16161b;
+    }
+
+    .service-num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--accent-dim);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .service-card h3 {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Contact ─────────────────────────────────────── */
+    #contact {
+      display: grid;
+      grid-template-columns: 1fr 1.8fr;
+      gap: 80px;
+      align-items: start;
+      padding-bottom: 140px;
+    }
+
+    #contact h2 {
+      font-size: 36px;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .contact-body {
+      padding-top: 8px;
+    }
+
+    .contact-body p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-dim);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .contact-email:hover {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      justify-content: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Scroll fade-in ──────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Background canvas ───────────────────────────── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav, section, .divider, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Mobile ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 18px 24px;
+      }
+
+      .nav-links {
+        gap: 24px;
+      }
+
+      section {
+        padding: 80px 24px;
+      }
+
+      #hero {
+        padding-top: 120px;
+      }
+
+      #about,
+      #contact {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      #services .section-header {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">Helix Media Lab</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="fade-in">
+      <p class="hero-tagline">Built for health brands that scale</p>
+      <h1>Performance marketing for health and wellness.</h1>
+      <p class="hero-sub">We help health and wellness brands grow through precision paid media. No fluff — just campaigns that perform.</p>
+      <a href="#contact" class="btn">Get in Touch</a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="fade-in">
+      <h2>About</h2>
+    </div>
+    <div class="about-body fade-in">
+      <p>
+        <strong>Helix Media Lab is a performance marketing operation focused on paid media for health and wellness brands.</strong>
+        We work across Meta and TikTok — building and running campaigns from creative through to conversion.
+        We don't take on volume. We take on the right brands and go deep.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="section-header fade-in">
+      <h2>What we do</h2>
+      <p class="services-intro">We run the full paid media cycle — from ad creative to final conversion — for brands in the health and wellness space.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <span class="service-num">01</span>
+        <h3>Paid Media Buying</h3>
+        <p>Campaign strategy and execution across Meta and TikTok.</p>
+      </div>
+      <div class="service-card fade-in">
+        <span class="service-num">02</span>
+        <h3>Creative Development</h3>
+        <p>Ad creative built for performance, not aesthetics.</p>
+      </div>
+      <div class="service-card fade-in">
+        <span class="service-num">03</span>
+        <h3>Funnel Optimization</h3>
+        <p>We follow the data from click to conversion.</p>
+      </div>
+      <div class="service-card fade-in">
+        <span class="service-num">04</span>
+        <h3>Health &amp; Wellness Focus</h3>
+        <p>We operate exclusively in health and wellness verticals.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="fade-in">
+      <h2>Let's talk</h2>
+    </div>
+    <div class="contact-body fade-in">
+      <p>If you're building a health or wellness brand and want media buying that moves numbers, reach out.</p>
+      <a href="mailto:contact@helixmedialab.com" class="contact-email">contact@helixmedialab.com</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Helix Media LLC. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ── Nav border on scroll ──────────────────────────
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── Scroll fade-in ────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    document.querySelectorAll('#hero .fade-in').forEach(el => el.classList.add('visible'));
+
+    // ── Background orb animation ──────────────────────
+    const canvas = document.getElementById('bg-canvas');
+    const ctx    = canvas.getContext('2d');
+
+    // Each orb: normalized base position (vx/vy = fraction of viewport),
+    // parallax rate on scroll, drift amplitude, color, opacity.
+    const orbs = [
+      { vx: 0.18, vy: 0.38, r: 0.55, rgb: '100,140,255', alpha: 0.13, px: 0.18, py: 0.30, sp: 0.00022, ph: 0.0  },
+      { vx: 0.78, vy: 0.55, r: 0.42, rgb: '80, 60,220', alpha: 0.10, px: 0.10, py: 0.50, sp: 0.00016, ph: 2.1  },
+      { vx: 0.50, vy: 1.15, r: 0.38, rgb: '60,180,230', alpha: 0.08, px: 0.14, py: 0.20, sp: 0.00019, ph: 4.4  },
+      { vx: 0.85, vy: 1.80, r: 0.40, rgb: '110,80,255', alpha: 0.09, px: 0.12, py: 0.35, sp: 0.00021, ph: 1.3  },
+    ];
+
+    let W = 0, H = 0;
+    let scrollY     = 0;
+    let smoothScroll = 0;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+    function drawOrb(orb, t) {
+      // Base centre in viewport space
+      const bx = orb.vx * W;
+      const by = orb.vy * H - smoothScroll * orb.py;
+
+      // Autonomous drift (slow Lissajous)
+      const dx = Math.sin(t * orb.sp       + orb.ph) * orb.px * W;
+      const dy = Math.cos(t * orb.sp * 0.7 + orb.ph) * orb.py * H * 0.6;
+
+      const cx = bx + dx;
+      const cy = by + dy;
+      const radius = orb.r * Math.max(W, H);
+
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      g.addColorStop(0,   `rgba(${orb.rgb},${orb.alpha})`);
+      g.addColorStop(0.45,`rgba(${orb.rgb},${orb.alpha * 0.35})`);
+      g.addColorStop(1,   `rgba(${orb.rgb},0)`);
+
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function loop(t) {
+      // Lerp scroll for smooth parallax
+      smoothScroll += (scrollY - smoothScroll) * 0.06;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Subtle dot-grid texture
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.018)';
+      const spacing = 28;
+      const offY = (smoothScroll * 0.08) % spacing;
+      for (let x = 0; x < W + spacing; x += spacing) {
+        for (let y = -spacing + offY; y < H + spacing; y += spacing) {
+          ctx.beginPath();
+          ctx.arc(x, y, 0.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+
+      // Orbs (additive-ish via globalCompositeOperation)
+      ctx.globalCompositeOperation = 'lighter';
+      orbs.forEach(orb => drawOrb(orb, t));
+      ctx.globalCompositeOperation = 'source-over';
+
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
+  </script>
+
+</body>
+</html>
